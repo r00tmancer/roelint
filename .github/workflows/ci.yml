@@ -25,3 +25,4 @@ jobs:
       - run: mypy src
       - run: pytest
       - run: roelint check examples/playbook.safe.yml -p examples/roe.yml
+      - run: python -c "from pathlib import Path; from roelint.mcp_server import create_server; create_server(Path('examples/roe.yml'))"

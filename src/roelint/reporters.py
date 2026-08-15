@@ -28,7 +28,7 @@ def as_json(findings: list[Finding]) -> str:
 
 def as_text(findings: list[Finding]) -> str:
     if not findings:
-        return "ROE-Lint: PASS — no policy violations found"
+        return "ROE-Lint: PASS - no policy violations found"
     icons = {"error": "ERROR", "warning": "WARN ", "note": "NOTE "}
     lines = []
     for item in findings:
@@ -47,7 +47,7 @@ def as_sarif(findings: list[Finding], playbook: Path) -> str:
         {
             "id": rule_id,
             "shortDescription": {"text": description},
-            "helpUri": "https://github.com/YOUR_GITHUB_USERNAME/roelint#rules",
+            "helpUri": "https://github.com/r00tmancer/roelint#rules",
         }
         for rule_id, description in RULES.items()
     ]

@@ -5,7 +5,7 @@ from typing import Any
 
 import yaml
 
-from .models import Policy, Step
+from .models import Policy, SourceEvidence, Step
 
 
 class ConfigError(ValueError):
@@ -50,6 +50,7 @@ def load_policy(path: Path) -> Policy:
     scope = _mapping(data.get("scope"), "scope")
     rules = _mapping(data.get("rules", {}), "rules")
     approvals_raw = _mapping(data.get("approvals", {}), "approvals")
+    evidence = _load_evidence(review)
 
     required = {
         "engagement.id": engagement.get("id"),
@@ -88,7 +89,35 @@ def load_policy(path: Path) -> Policy:
         approval_required=_strings(rules.get("approval_required"), "rules.approval_required"),
         approvals=approval_ids,
         max_rate_per_second=max_rate,
+        evidence=evidence,
     )
+
+
+def _load_evidence(review: Any) -> tuple[SourceEvidence, ...]:
+    if not isinstance(review, dict):
+        return ()
+    source = review.get("source")
+    raw_evidence = review.get("evidence", [])
+    if not isinstance(source, str) or not isinstance(raw_evidence, list):
+        return ()
+    parsed: list[SourceEvidence] = []
+    for item in raw_evidence:
+        if not isinstance(item, dict):
+            continue
+        field = item.get("field")
+        value = item.get("value")
+        line = item.get("line")
+        excerpt = item.get("excerpt")
+        page = item.get("page")
+        if (
+            isinstance(field, str)
+            and isinstance(value, str)
+            and isinstance(line, int)
+            and isinstance(excerpt, str)
+            and (page is None or isinstance(page, int))
+        ):
+            parsed.append(SourceEvidence(field, value, source, page, line, excerpt))
+    return tuple(parsed)
 
 
 def load_steps(path: Path) -> list[Step]:

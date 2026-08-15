@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "roelint": {
+      "command": "roelint-mcp",
+      "args": ["--policy", "/absolute/path/to/roe.yml"]
+    }
+  }
+}

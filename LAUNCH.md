@@ -2,17 +2,15 @@
 
 ## Before publishing
 
-1. Replace every `YOUR_GITHUB_USERNAME` placeholder.
-2. Pick the final package owner name and update `pyproject.toml` authors.
-3. Create the public repository as `roelint` and enable:
+1. Create the public repository as `roelint` and enable:
    - Issues and Discussions
    - Private vulnerability reporting
    - Dependabot security updates
    - Branch protection requiring CI
-4. Push this repository and open the first PR using `PR_BODY.md`.
-5. Merge through CI, then tag `v0.1.0` and create a GitHub Release.
-6. Reserve the `roelint` name on PyPI and publish with trusted publishing.
-7. Move the `v1` tag to the release commit for Action users.
+2. Push this repository and open the first PR using `PR_BODY.md`.
+3. Merge through CI, then tag `v0.1.0` and create a GitHub Release.
+4. Reserve the `roelint` name on PyPI and publish with trusted publishing.
+5. Move the `v1` tag to the release commit for Action users.
 
 ## Launch post angle
 

@@ -90,6 +90,8 @@ def test_draft_must_be_approved_before_linting(tmp_path: Path) -> None:
     approve_policy(draft, approved, "Analyst Name")
     loaded = load_policy(approved)
     assert loaded.include == ("10.20.0.0/16",)
+    assert loaded.evidence[0].source == "roe.txt"
+    assert loaded.evidence[0].field == "scope.include"
     approved_data = yaml.safe_load(approved.read_text(encoding="utf-8"))
     assert approved_data["review"]["status"] == "approved"
     assert approved_data["review"]["reviewed_by"] == "Analyst Name"

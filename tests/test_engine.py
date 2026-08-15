@@ -1,7 +1,7 @@
 from datetime import date
 
 from roelint.engine import lint
-from roelint.models import Policy, Step
+from roelint.models import Policy, SourceEvidence, Step
 
 
 def policy(**changes: object) -> Policy:
@@ -79,3 +79,23 @@ def test_dynamic_target_gets_warning() -> None:
 def test_expired_authorization_is_blocked() -> None:
     findings = lint(policy(expires="2025-01-01"), [], today=date(2026, 1, 1))
     assert "ROE001" in rule_ids(findings)
+
+
+def test_excluded_target_finding_cites_source_evidence() -> None:
+    evidence = (
+        SourceEvidence(
+            "scope.exclude",
+            "10.20.10.0/24",
+            "client-roe.pdf",
+            4,
+            18,
+            "Payment production systems must not be tested.",
+        ),
+    )
+    findings = lint(
+        policy(evidence=evidence),
+        [Step("scan", "nmap 10.20.10.50")],
+        today=date(2026, 1, 1),
+    )
+    assert findings[0].help is not None
+    assert "client-roe.pdf, page 4, line 18" in findings[0].help

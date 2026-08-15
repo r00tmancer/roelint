@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">ROE-Lint social preview</title>
+  <desc id="desc">Policy firewall for red-team commands and AI agents</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080d1a"/>
+      <stop offset="1" stop-color="#121b31"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff5364"/>
+      <stop offset="1" stop-color="#bd1434"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="22" flood-color="#000" flood-opacity=".38"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <circle cx="1125" cy="10" r="320" fill="#ff334d" opacity=".045"/>
+  <circle cx="80" cy="650" r="300" fill="#517cff" opacity=".045"/>
+
+  <g transform="translate(78 72)">
+    <path d="M62 0 124 23v49c0 38-23 62-62 76C23 134 0 110 0 72V23z" fill="url(#red)"/>
+    <path d="m34 72 19 19 40-43" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="230" y="160" fill="#f8fafc" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="84" font-weight="800" letter-spacing="-3">ROE-Lint</text>
+  <text x="82" y="236" fill="#cbd5e1" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="34" font-weight="600">Policy firewall for red-team commands and AI agents.</text>
+  <text x="82" y="285" fill="#7f8da8" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25">Drop in the ROE. Block out-of-scope commands before they run.</text>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="600">
+    <rect x="82" y="326" width="154" height="42" rx="21" fill="#16223b" stroke="#2b3b5d"/>
+    <text x="111" y="353" fill="#b8c6df">LOCAL FIRST</text>
+    <rect x="250" y="326" width="174" height="42" rx="21" fill="#16223b" stroke="#2b3b5d"/>
+    <text x="280" y="353" fill="#b8c6df">NO EXECUTION</text>
+    <rect x="438" y="326" width="105" height="42" rx="21" fill="#16223b" stroke="#2b3b5d"/>
+    <text x="468" y="353" fill="#b8c6df">MCP</text>
+    <rect x="557" y="326" width="145" height="42" rx="21" fill="#16223b" stroke="#2b3b5d"/>
+    <text x="587" y="353" fill="#b8c6df">CI / SARIF</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="82" y="408" width="1116" height="154" rx="20" fill="#080c16" stroke="#27334d"/>
+    <circle cx="115" cy="440" r="6" fill="#ff5f57"/>
+    <circle cx="137" cy="440" r="6" fill="#febc2e"/>
+    <circle cx="159" cy="440" r="6" fill="#28c840"/>
+    <text x="112" y="492" fill="#94a3b8" font-family="Cascadia Mono,Consolas,monospace" font-size="22">$ roelint check-command -p roe.yml -- nmap -sV 10.20.10.50</text>
+    <text x="112" y="531" fill="#ff5364" font-family="Cascadia Mono,Consolas,monospace" font-size="22" font-weight="700">BLOCKED</text>
+    <text x="220" y="531" fill="#e2e8f0" font-family="Cascadia Mono,Consolas,monospace" font-size="22">excluded by client-roe.pdf, page 4</text>
+  </g>
+  <text x="1198" y="606" text-anchor="end" fill="#52617d" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18">github.com/r00tmancer/roelint</text>
+</svg>

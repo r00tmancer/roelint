@@ -114,6 +114,7 @@ def _lint_step(policy: Policy, step: Step) -> list[Finding]:
                     f"target '{target}' is explicitly excluded",
                     step.id,
                     "targets",
+                    _source_help(policy, "scope.exclude", target, match_target=True),
                 )
             )
         elif status == "outside":
@@ -191,3 +192,19 @@ def _lint_step(policy: Policy, step: Step) -> list[Finding]:
             )
         )
     return findings
+
+
+def _source_help(
+    policy: Policy, field: str, value: str, *, match_target: bool = False
+) -> str | None:
+    for item in policy.evidence:
+        if item.field != field:
+            continue
+        matches = item.value == value
+        if match_target:
+            matches = target_status(value, (), (item.value,)) == "excluded"
+        if not matches:
+            continue
+        location = f"page {item.page}, line {item.line}" if item.page else f"line {item.line}"
+        return f'Source: {item.source}, {location} - "{item.excerpt}"'
+    return None
