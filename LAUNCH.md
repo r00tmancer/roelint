@@ -2,15 +2,16 @@
 
 ## Before publishing
 
-1. Create the public repository as `roelint` and enable:
-   - Issues and Discussions
-   - Private vulnerability reporting
-   - Dependabot security updates
-   - Branch protection requiring CI
-2. Push this repository and open the first PR using `PR_BODY.md`.
-3. Merge through CI, then tag `v0.1.0` and create a GitHub Release.
-4. Reserve the `roelint` name on PyPI and publish with trusted publishing.
-5. Move the `v1` tag to the release commit for Action users.
+- [x] Create the public repository as `roelint`.
+- [x] Enable Issues and Discussions.
+- [x] Enable private vulnerability reporting and Dependabot security updates.
+- [x] Protect `main` with required CI, linear history, and resolved conversations.
+- [x] Push the repository and open the first draft PR using `PR_BODY.md`.
+- [ ] Upload `docs/social-preview.png` in the repository's Social preview settings.
+- [ ] Review and merge PR #1 through CI.
+- [ ] Tag `v0.1.0` and create a GitHub Release.
+- [ ] Reserve the `roelint` name on PyPI and publish with trusted publishing.
+- [ ] Move the `v1` tag to the release commit for Action users.
 
 ## Launch post angle
 
