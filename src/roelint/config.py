@@ -40,6 +40,11 @@ def load_policy(path: Path) -> Policy:
     data = read_yaml(path)
     if data.get("version") != 1:
         raise ConfigError("policy version must be 1")
+    review = data.get("review")
+    if isinstance(review, dict) and review.get("status") == "draft":
+        raise ConfigError(
+            "imported policy is still a draft; review it and run 'roelint approve-policy'"
+        )
     engagement = _mapping(data.get("engagement"), "engagement")
     authorization = _mapping(data.get("authorization"), "authorization")
     scope = _mapping(data.get("scope"), "scope")

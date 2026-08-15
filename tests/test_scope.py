@@ -16,12 +16,15 @@ def test_normalize_target(value: str, expected: str) -> None:
 
 
 def test_extracts_urls_ips_cidrs_and_domains() -> None:
-    command = "tool https://api.lab.example/a 10.2.3.4 10.9.0.0/16 other.example.net"
+    command = (
+        "tool https://api.lab.example/a 10.2.3.4 10.9.0.0/16 other.example.net *.wild.example.net"
+    )
     assert extract_targets(command) == {
         "api.lab.example",
         "10.2.3.4",
         "10.9.0.0/16",
         "other.example.net",
+        "*.wild.example.net",
     }
 
 

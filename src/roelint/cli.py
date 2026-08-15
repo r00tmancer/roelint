@@ -8,6 +8,7 @@ from pathlib import Path
 from . import __version__
 from .config import ConfigError, load_policy, load_steps
 from .engine import lint
+from .importer import approve_policy, import_roe, write_import
 from .reporters import as_json, as_sarif, as_text
 
 
@@ -24,11 +25,32 @@ def build_parser() -> argparse.ArgumentParser:
     check.add_argument("--format", choices=("text", "json", "sarif"), default="text")
     check.add_argument("--output", "-o", type=Path)
     check.add_argument("--fail-on", choices=("warning", "error"), default="error")
+
+    import_parser = subparsers.add_parser(
+        "import-roe", help="extract a draft policy from a PDF, DOCX, TXT, or Markdown ROE"
+    )
+    import_parser.add_argument("document", type=Path)
+    import_parser.add_argument("--output", "-o", type=Path, default=Path("roe.draft.yml"))
+    import_parser.add_argument("--report", type=Path, default=Path("roe.review.json"))
+    import_parser.add_argument("--engagement-id")
+    import_parser.add_argument("--owner")
+    import_parser.add_argument("--expires")
+
+    approve = subparsers.add_parser(
+        "approve-policy", help="mark a reviewed imported policy as approved"
+    )
+    approve.add_argument("draft", type=Path)
+    approve.add_argument("--output", "-o", type=Path, default=Path("roe.yml"))
+    approve.add_argument("--reviewed-by", required=True)
     return parser
 
 
 def run(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.subcommand == "import-roe":
+        return _run_import(args)
+    if args.subcommand == "approve-policy":
+        return _run_approve(args)
     try:
         policy = load_policy(args.policy)
         steps = load_steps(args.playbook)
@@ -53,6 +75,38 @@ def run(argv: list[str] | None = None) -> int:
     severities = {item.severity for item in findings}
     if "error" in severities or (args.fail_on == "warning" and "warning" in severities):
         return 1
+    return 0
+
+
+def _run_import(args: argparse.Namespace) -> int:
+    try:
+        result = import_roe(
+            args.document,
+            engagement_id=args.engagement_id,
+            owner_override=args.owner,
+            expires_override=args.expires,
+        )
+        write_import(result, args.output, args.report)
+    except ConfigError as exc:
+        print(f"roelint: import error: {exc}", file=sys.stderr)
+        return 2
+    include = len(result.policy["scope"]["include"])
+    exclude = len(result.policy["scope"]["exclude"])
+    ambiguous = len(result.policy["scope"]["unresolved"])
+    print(f"ROE-Lint: extracted {include} in-scope and {exclude} excluded target(s)")
+    print(f"Review required: {ambiguous} ambiguous target(s), {len(result.unresolved)} issue(s)")
+    print(f"Draft: {args.output}")
+    print(f"Evidence: {args.report}")
+    return 1 if result.unresolved else 0
+
+
+def _run_approve(args: argparse.Namespace) -> int:
+    try:
+        approve_policy(args.draft, args.output, args.reviewed_by)
+    except ConfigError as exc:
+        print(f"roelint: approval error: {exc}", file=sys.stderr)
+        return 2
+    print(f"ROE-Lint: approved policy written to {args.output}")
     return 0
 
 

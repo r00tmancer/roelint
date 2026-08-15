@@ -4,7 +4,7 @@
 
 This PR introduces the first usable ROE-Lint release: a static, vendor-neutral policy gate for authorized red-team playbooks. It checks targets and operations against a machine-readable Rules of Engagement file before anything reaches an execution tool.
 
-The MVP includes scope/exclusion matching for IPs, CIDRs, URLs, exact domains, and wildcard domains; authorization expiry; tool and technique policy; explicit approval gates; destructive-operation and plaintext-secret checks; unresolved-target warnings; text/JSON/SARIF output; and a reusable GitHub Action.
+The MVP includes local PDF/DOCX/TXT/Markdown ROE import with source evidence and mandatory review; scope/exclusion matching for IPs, CIDRs, URLs, exact domains, and wildcard domains; authorization expiry; tool and technique policy; explicit approval gates; destructive-operation and plaintext-secret checks; unresolved-target warnings; text/JSON/SARIF output; and a reusable GitHub Action.
 
 ## Why
 
@@ -27,6 +27,7 @@ mypy src
 pytest
 roelint check examples/playbook.safe.yml -p examples/roe.yml
 roelint check examples/playbook.blocked.yml -p examples/roe.yml
+roelint import-roe examples/roe-source.txt -o roe.draft.yml --report roe.review.json
 ```
 
 ## Review focus

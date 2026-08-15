@@ -1,0 +1,16 @@
+RED TEAM RULES OF ENGAGEMENT
+
+Engagement owner: security@acme.example
+Valid until: 31.12.2099
+
+In scope
+- 10.20.0.0/16
+- *.lab.acme.example
+
+Out of scope
+- 10.20.10.50
+- payments.lab.acme.example
+
+Permitted targets may be assessed with nmap, nuclei, and curl.
+Denial of service and data destruction are prohibited.
+Credential access requires prior approval.
