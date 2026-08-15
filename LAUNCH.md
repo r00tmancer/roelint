@@ -1,0 +1,31 @@
+# ROE-Lint launch checklist
+
+## Before publishing
+
+1. Replace every `YOUR_GITHUB_USERNAME` placeholder.
+2. Pick the final package owner name and update `pyproject.toml` authors.
+3. Create the public repository as `roelint` and enable:
+   - Issues and Discussions
+   - Private vulnerability reporting
+   - Dependabot security updates
+   - Branch protection requiring CI
+4. Push this repository and open the first PR using `PR_BODY.md`.
+5. Merge through CI, then tag `v0.1.0` and create a GitHub Release.
+6. Reserve the `roelint` name on PyPI and publish with trusted publishing.
+7. Move the `v1` tag to the release commit for Action users.
+
+## Launch post angle
+
+**Title:** I built a linter that stops red-team commands when they violate the Rules of Engagement
+
+Lead with the 15-second blocked-playbook demo, not a feature list. Show one broad include, one narrow production exclusion, and one failed pull request. The memorable sentence is: “Your ROE is reviewed like code, but never executed as code.”
+
+## Distribution
+
+- Submit a concise Show HN post with the design-boundary discussion.
+- Share the demo in r/netsec's monthly tool thread after establishing repository history.
+- Open adapter issues labeled `good first issue` for Atomic Red Team, VECTR, Prelude, and OPA.
+- Ask 3–5 working red-team operators for rule false-positive feedback before announcing 1.0.
+- Publish one technical article on exclusion precedence, CIDR containment, and why DNS is intentionally disabled.
+
+Stars cannot be guaranteed. The best levers are a one-command demo, a clear problem statement, trustworthy safety boundaries, fast issue response, and integrations that let existing teams adopt the tool without changing their execution stack.

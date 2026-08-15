@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="220" viewBox="0 0 980 220" role="img" aria-labelledby="title desc">
+  <title id="title">ROE-Lint</title>
+  <desc id="desc">A red shield with a policy check beside the ROE-Lint wordmark</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff4655"/>
+      <stop offset="1" stop-color="#b80f2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="220" rx="28" fill="#0b1020"/>
+  <path d="M110 28 182 54v58c0 43-27 71-72 86-45-15-72-43-72-86V54z" fill="url(#g)"/>
+  <path d="m76 111 22 22 47-51" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="220" y="128" fill="#f8fafc" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="74" font-weight="800" letter-spacing="-2">ROE-Lint</text>
+  <text x="224" y="168" fill="#94a3b8" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24">POLICY-AS-CODE FOR AUTHORIZED OPERATIONS</text>
+</svg>
