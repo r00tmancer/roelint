@@ -4,6 +4,13 @@ All notable changes follow Keep a Changelog. This project uses Semantic Versioni
 
 ## [Unreleased]
 
+### Added
+
+- Local PDF, DOCX, TXT, and Markdown ROE document importer
+- English and Turkish scope, authorization, tool, and technique extraction
+- Source evidence report with page, line, excerpt, and confidence
+- Draft-policy approval gate that prevents unreviewed imports from being used
+
 ## [0.1.0] - 2026-08-15
 
 ### Added

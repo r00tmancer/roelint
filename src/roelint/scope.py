@@ -10,6 +10,10 @@ _HOST_RE = re.compile(
 )
 _IP_OR_CIDR_RE = re.compile(r"(?<![\w.])(?:\d{1,3}\.){3}\d{1,3}(?:/\d{1,2})?(?![\w.])")
 _URL_RE = re.compile(r"\b[a-zA-Z][a-zA-Z0-9+.-]*://[^\s'\"<>]+")
+_WILDCARD_RE = re.compile(
+    r"(?<![\w-])\*\.(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+"
+    r"[a-zA-Z]{2,63}(?![\w-])"
+)
 
 
 def normalize_target(value: str) -> str:
@@ -27,6 +31,9 @@ def extract_targets(command: str) -> set[str]:
     found: set[str] = set()
     scrubbed = command
     for match in _URL_RE.findall(command):
+        found.add(normalize_target(match))
+        scrubbed = scrubbed.replace(match, " ")
+    for match in _WILDCARD_RE.findall(scrubbed):
         found.add(normalize_target(match))
         scrubbed = scrubbed.replace(match, " ")
     for match in _IP_OR_CIDR_RE.findall(scrubbed):

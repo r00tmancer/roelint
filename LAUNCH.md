@@ -18,7 +18,7 @@
 
 **Title:** I built a linter that stops red-team commands when they violate the Rules of Engagement
 
-Lead with the 15-second blocked-playbook demo, not a feature list. Show one broad include, one narrow production exclusion, and one failed pull request. The memorable sentence is: “Your ROE is reviewed like code, but never executed as code.”
+Lead with the 20-second document-to-policy-to-blocked-PR demo, not a feature list. Drop in a customer's existing sanitized ROE PDF, show the cited draft, then show one narrow production exclusion failing the pull request. The memorable sentence is: “Drop in the ROE you already have; get a policy gate you can review.”
 
 ## Distribution
 

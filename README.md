@@ -20,6 +20,8 @@ Rules of Engagement usually live in a PDF while operations live in terminals, sc
 
 ROE-Lint turns the relevant boundaries into reviewable policy-as-code:
 
+- Local PDF, DOCX, TXT, and Markdown ROE import with no API key
+- Source evidence, confidence scores, and an explicit human approval gate
 - CIDR, IP, exact-domain, and wildcard-domain scope checks
 - Exclusions that always override inclusions
 - Authorization expiry checks
@@ -33,6 +35,12 @@ ROE-Lint turns the relevant boundaries into reviewable policy-as-code:
 
 ```bash
 pipx install roelint
+
+# Convert the client's existing ROE document into a reviewable draft.
+roelint import-roe client-roe.pdf -o roe.draft.yml --report roe.review.json
+
+# Review the draft and evidence, then explicitly approve it.
+roelint approve-policy roe.draft.yml -o roe.yml --reviewed-by "Analyst Name"
 
 roelint check examples/playbook.safe.yml --policy examples/roe.yml
 # ROE-Lint: PASS — no policy violations found
@@ -49,6 +57,44 @@ To try the repository version:
 python -m pip install -e ".[dev]"
 pytest
 ```
+
+## Import an existing ROE document
+
+You do not have to write YAML from scratch. Give ROE-Lint the customer's existing text-based PDF, DOCX, TXT, or Markdown file:
+
+```bash
+roelint import-roe ACME-Rules-of-Engagement.pdf \
+  --output roe.draft.yml \
+  --report roe.review.json
+```
+
+The importer detects:
+
+- in-scope and excluded IPs, CIDRs, URLs, exact domains, and wildcard domains;
+- authorization owner and expiry dates;
+- permitted tools;
+- prohibited techniques and techniques requiring prior approval;
+- common English and Turkish ROE wording.
+
+`roe.draft.yml` contains the extracted policy. `roe.review.json` records each decision's source page, line, excerpt, and confidence score. Targets without clear “in scope” or “out of scope” context remain under `scope.unresolved`; they are never silently authorized.
+
+Imported policies are deliberately marked `review.status: draft`. ROE-Lint refuses to use a draft for operational checks. After comparing it with the evidence report:
+
+```bash
+roelint approve-policy roe.draft.yml \
+  --output roe.yml \
+  --reviewed-by "Analyst Name"
+```
+
+If owner or expiry wording is unusual, provide those values without editing YAML:
+
+```bash
+roelint import-roe client.pdf \
+  --owner security@client.example \
+  --expires 2026-12-31
+```
+
+Scanned/image-only PDFs need OCR before import. Complex or contradictory legal language remains a human review task; ROE-Lint automates transcription and evidence gathering, not authorization.
 
 ## Policy
 
@@ -149,6 +195,8 @@ roelint check ops/playbook.yml -p ops/roe.yml --format sarif -o roelint.sarif
 
 ## Roadmap
 
+- OCR for scanned ROE documents
+- Optional local/hosted LLM extraction for complex prose, with deterministic validation
 - JSON Schema editor hints and schema validation
 - Adapters for Prelude, VECTR, Atomic Red Team, and custom pipelines
 - Signed policy/approval envelopes with Sigstore
