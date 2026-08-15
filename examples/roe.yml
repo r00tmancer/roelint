@@ -1,0 +1,27 @@
+version: 1
+
+engagement:
+  id: ACME-2026-08
+
+authorization:
+  owner: security@acme.example
+  expires: "2099-12-31"
+
+scope:
+  include:
+    - 10.20.0.0/16
+    - "*.lab.acme.example"
+  exclude:
+    - 10.20.10.50
+    - payments.lab.acme.example
+
+rules:
+  allowed_tools: [nmap, curl, nuclei]
+  prohibited_techniques: [denial-of-service, data-destruction]
+  approval_required: [credential-access, phishing]
+  max_rate_per_second: 50
+
+approvals:
+  CHANGE-4821:
+    approved: true
+    approver: security@acme.example
