@@ -41,6 +41,16 @@ class Step:
 
 
 @dataclass(frozen=True)
+class SourceEvidence:
+    field: str
+    value: str
+    source: str
+    page: int | None
+    line: int
+    excerpt: str
+
+
+@dataclass(frozen=True)
 class Policy:
     engagement_id: str
     owner: str
@@ -52,3 +62,4 @@ class Policy:
     approval_required: tuple[str, ...] = ()
     approvals: frozenset[str] = field(default_factory=frozenset)
     max_rate_per_second: int | None = None
+    evidence: tuple[SourceEvidence, ...] = ()

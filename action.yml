@@ -1,6 +1,6 @@
 name: ROE-Lint policy gate
 description: Fail a pull request when a security playbook violates its Rules of Engagement
-author: ROE-Lint contributors
+author: Enes Demir
 branding:
   icon: shield
   color: red

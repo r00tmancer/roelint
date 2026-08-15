@@ -9,7 +9,7 @@ description = "Import and enforce Rules of Engagement for authorized red-team pl
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "ROE-Lint contributors" }]
+authors = [{ name = "Enes Demir" }]
 keywords = ["red-team", "pentest", "security", "rules-of-engagement", "sarif"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -19,17 +19,26 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Topic :: Security",
 ]
-dependencies = ["PyYAML>=6.0.2,<7", "pypdf>=5.0,<7"]
+dependencies = ["defusedxml>=0.7.1,<0.8", "PyYAML>=6.0.2,<7", "pypdf>=5.0,<7"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.3", "ruff>=0.9", "mypy>=1.14", "types-PyYAML>=6.0"]
+agent = ["mcp>=2.0,<3"]
+dev = [
+  "mcp>=2.0,<3",
+  "pytest>=8.3",
+  "ruff>=0.9",
+  "types-defusedxml>=0.7",
+  "mypy>=1.14",
+  "types-PyYAML>=6.0",
+]
 
 [project.scripts]
 roelint = "roelint.cli:main"
+roelint-mcp = "roelint.mcp_server:main"
 
 [project.urls]
-Homepage = "https://github.com/YOUR_GITHUB_USERNAME/roelint"
-Issues = "https://github.com/YOUR_GITHUB_USERNAME/roelint/issues"
+Homepage = "https://github.com/r00tmancer/roelint"
+Issues = "https://github.com/r00tmancer/roelint/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/roelint"]

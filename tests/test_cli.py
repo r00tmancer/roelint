@@ -85,3 +85,36 @@ Out of scope: 10.20.10.50
         == 0
     )
     assert approved.exists()
+
+
+def test_check_command_blocks_excluded_target(capsys: object) -> None:
+    code = run(
+        [
+            "check-command",
+            "-p",
+            str(ROOT / "examples/roe.yml"),
+            "--",
+            "nmap",
+            "-sV",
+            "10.20.10.50",
+        ]
+    )
+    assert code == 1
+    output = capsys.readouterr().out  # type: ignore[attr-defined]
+    assert "explicitly excluded" in output
+
+
+def test_check_command_allows_in_scope_target(capsys: object) -> None:
+    code = run(
+        [
+            "check-command",
+            "-p",
+            str(ROOT / "examples/roe.yml"),
+            "--",
+            "nmap",
+            "-sV",
+            "10.20.4.10",
+        ]
+    )
+    assert code == 0
+    assert "PASS" in capsys.readouterr().out  # type: ignore[attr-defined]

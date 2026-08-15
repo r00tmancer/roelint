@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import shlex
 import sys
 from datetime import date
 from pathlib import Path
@@ -9,6 +10,7 @@ from . import __version__
 from .config import ConfigError, load_policy, load_steps
 from .engine import lint
 from .importer import approve_policy, import_roe, write_import
+from .models import Step
 from .reporters import as_json, as_sarif, as_text
 
 
@@ -25,6 +27,13 @@ def build_parser() -> argparse.ArgumentParser:
     check.add_argument("--format", choices=("text", "json", "sarif"), default="text")
     check.add_argument("--output", "-o", type=Path)
     check.add_argument("--fail-on", choices=("warning", "error"), default="error")
+
+    command = subparsers.add_parser(
+        "check-command", help="lint one command without creating a playbook"
+    )
+    command.add_argument("--policy", "-p", type=Path, required=True)
+    command.add_argument("--format", choices=("text", "json"), default="text")
+    command.add_argument("command", nargs=argparse.REMAINDER)
 
     import_parser = subparsers.add_parser(
         "import-roe", help="extract a draft policy from a PDF, DOCX, TXT, or Markdown ROE"
@@ -51,6 +60,8 @@ def run(argv: list[str] | None = None) -> int:
         return _run_import(args)
     if args.subcommand == "approve-policy":
         return _run_approve(args)
+    if args.subcommand == "check-command":
+        return _run_check_command(args)
     try:
         policy = load_policy(args.policy)
         steps = load_steps(args.playbook)
@@ -108,6 +119,23 @@ def _run_approve(args: argparse.Namespace) -> int:
         return 2
     print(f"ROE-Lint: approved policy written to {args.output}")
     return 0
+
+
+def _run_check_command(args: argparse.Namespace) -> int:
+    tokens = list(args.command)
+    if tokens and tokens[0] == "--":
+        tokens.pop(0)
+    if not tokens:
+        print("roelint: check-command requires a command after '--'", file=sys.stderr)
+        return 2
+    try:
+        policy = load_policy(args.policy)
+        findings = lint(policy, [Step("command", shlex.join(tokens))], today=date.today())
+    except ConfigError as exc:
+        print(f"roelint: configuration error: {exc}", file=sys.stderr)
+        return 2
+    print(as_json(findings) if args.format == "json" else as_text(findings))
+    return 1 if any(item.severity == "error" for item in findings) else 0
 
 
 def main() -> None:

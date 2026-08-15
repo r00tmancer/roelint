@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 import zipfile
 from dataclasses import asdict, dataclass
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
-from xml.etree import ElementTree
 
 import yaml
+from defusedxml import ElementTree
 from pypdf import PdfReader
 
 from .config import ConfigError, read_yaml
@@ -171,8 +172,15 @@ def _extract_docx(path: Path) -> list[SourceLine]:
 
 
 def _contains(text: str, phrases: tuple[str, ...]) -> bool:
-    lowered = text.casefold()
-    return any(phrase in lowered for phrase in phrases)
+    folded = _fold(text)
+    return any(_fold(phrase) in folded for phrase in phrases)
+
+
+def _fold(text: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", text)
+    return "".join(
+        character for character in decomposed if not unicodedata.combining(character)
+    ).casefold()
 
 
 def _parse_date(text: str) -> str | None:
@@ -210,7 +218,7 @@ def import_roe(
     allowed_tools: set[str] = set()
 
     for source in lines:
-        lowered = source.text.casefold()
+        lowered = _fold(source.text)
         targets = extract_targets(source.text)
         line_disposition: str | None = None
         if _contains(lowered, _EXCLUDE_WORDS):
@@ -269,7 +277,7 @@ def import_roe(
             )
 
         for technique, aliases in _TECHNIQUES.items():
-            if not any(alias in lowered for alias in aliases):
+            if not any(_fold(alias) in lowered for alias in aliases):
                 continue
             if _contains(lowered, _PROHIBITED_WORDS):
                 prohibited.add(technique)
@@ -317,6 +325,7 @@ def import_roe(
             "source": path.name,
             "extracted_at": _now(),
             "unresolved": unresolved,
+            "evidence": [asdict(item) for item in evidence],
         },
         "engagement": {"id": engagement_id or _engagement_id(path)},
         "authorization": {
