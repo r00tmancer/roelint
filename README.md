@@ -3,6 +3,7 @@
   <p><strong>Stop out-of-scope commands before they run.</strong></p>
   <p>
     <a href="https://github.com/r00tmancer/roelint/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/r00tmancer/roelint/actions/workflows/ci.yml/badge.svg"></a>
+    <a href="https://pypi.org/project/roelint/"><img alt="PyPI" src="https://img.shields.io/pypi/v/roelint.svg"></a>
     <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
     <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-3776AB.svg">
     <img alt="SARIF" src="https://img.shields.io/badge/output-SARIF-7B42BC.svg">
@@ -10,6 +11,16 @@
 </div>
 
 ROE-Lint turns an existing Rules of Engagement document into a local policy firewall for human operators, CI pipelines, and AI red-team agents. It blocks out-of-scope commands **before any security tool is executed**.
+
+<p align="center">
+  <img src="docs/demo.gif" alt="ROE-Lint imports an ROE document, records human approval, and blocks an excluded command with source evidence" width="960">
+</p>
+
+Install it with `pipx install roelint`, or try the CLI without a persistent install:
+
+```bash
+uvx roelint --version
+```
 
 > [!IMPORTANT]
 > ROE-Lint performs static analysis only. It never scans a target, executes a playbook, or grants authorization. Written permission from the system owner remains mandatory.
@@ -200,7 +211,7 @@ jobs:
   roe:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: r00tmancer/roelint@v1
         with:
           playbook: ops/playbook.yml
