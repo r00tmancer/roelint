@@ -1,0 +1,82 @@
+- name: english-section-cidr
+  text: |
+    In scope
+    10.20.0.0/16
+    Out of scope
+    10.20.10.50
+  include: [10.20.0.0/16]
+  exclude: [10.20.10.50]
+  unresolved: []
+
+- name: english-inline-domain
+  text: |
+    In scope: api.lab.example
+    Do not test: payments.lab.example
+  include: [api.lab.example]
+  exclude: [payments.lab.example]
+  unresolved: []
+
+- name: english-wildcard
+  text: |
+    Authorized targets: *.assessment.example
+    Excluded: admin.assessment.example
+  include: ["*.assessment.example"]
+  exclude: [admin.assessment.example]
+  unresolved: []
+
+- name: english-url-normalization
+  text: |
+    Scope includes https://api.example.test/v1/health
+    Out of scope: https://billing.example.test/
+  include: [api.example.test]
+  exclude: [billing.example.test]
+  unresolved: []
+
+- name: turkish-sections
+  text: |
+    Kapsam içi
+    172.16.0.0/16
+    Kapsam dışı
+    172.16.10.10
+  include: [172.16.0.0/16]
+  exclude: [172.16.10.10]
+  unresolved: []
+
+- name: turkish-inline
+  text: |
+    İzinli hedef: portal.example.test
+    Test edilmeyecek: odeme.example.test
+  include: [portal.example.test]
+  exclude: [odeme.example.test]
+  unresolved: []
+
+- name: exclusion-overrides-broad-range
+  text: |
+    In scope: 192.168.0.0/16
+    Excluded target: 192.168.20.0/24
+  include: [192.168.0.0/16]
+  exclude: [192.168.20.0/24]
+  unresolved: []
+
+- name: ambiguous-is-never-authorized
+  text: |
+    Environment reference: mystery.example.net
+  include: []
+  exclude: []
+  unresolved: [mystery.example.net]
+
+- name: multiple-targets
+  text: |
+    Included targets: 10.1.1.1, 10.1.1.2, and host.example.test
+    Out of scope: 10.1.1.3
+  include: [10.1.1.1, 10.1.1.2, host.example.test]
+  exclude: [10.1.1.3]
+  unresolved: []
+
+- name: exclusion-wins-when-repeated
+  text: |
+    In scope: duplicate.example.test
+    Out of scope: duplicate.example.test
+  include: []
+  exclude: [duplicate.example.test]
+  unresolved: []

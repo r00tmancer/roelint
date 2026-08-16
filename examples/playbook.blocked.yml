@@ -1,0 +1,13 @@
+name: Unsafe example (expected to fail)
+steps:
+  - id: excluded-host
+    technique: network-service-scanning
+    command: nmap -sV 10.20.10.50
+
+  - id: outside-scope
+    technique: application-layer-protocol
+    command: curl https://example.org/
+
+  - id: unapproved-technique
+    technique: credential-access
+    command: nuclei -u https://api.lab.acme.example

@@ -1,0 +1,29 @@
+name: ROE-Lint policy gate
+description: Fail a pull request when a security playbook violates its Rules of Engagement
+author: Enes Demir
+branding:
+  icon: shield
+  color: red
+inputs:
+  playbook:
+    description: Path to the playbook YAML file
+    required: true
+  policy:
+    description: Path to the Rules of Engagement YAML file
+    required: true
+  fail-on:
+    description: Minimum severity that fails the check (warning or error)
+    required: false
+    default: error
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install ROE-Lint
+      shell: bash
+      run: python -m pip install "${{ github.action_path }}"
+    - name: Check playbook
+      shell: bash
+      run: roelint check "${{ inputs.playbook }}" --policy "${{ inputs.policy }}" --fail-on "${{ inputs.fail-on }}"

@@ -1,0 +1,30 @@
+name: Bug report
+description: Report an incorrect finding, crash, or compatibility problem
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Never include live credentials, private targets, or client data.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: minimal
+    attributes:
+      label: Sanitized reproducer
+      description: Provide the smallest policy/playbook pair using reserved example targets.
+      render: yaml
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: ROE-Lint version
+      placeholder: 0.1.0
+    validations:
+      required: true

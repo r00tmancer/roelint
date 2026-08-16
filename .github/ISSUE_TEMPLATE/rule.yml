@@ -1,0 +1,26 @@
+name: Detection rule proposal
+description: Propose a high-signal, testable policy rule
+title: "rule: "
+labels: [enhancement, rule]
+body:
+  - type: textarea
+    id: risk
+    attributes:
+      label: Operational risk
+      description: What authorized-operation mistake should this prevent?
+    validations:
+      required: true
+  - type: textarea
+    id: positive
+    attributes:
+      label: Positive examples
+      description: Sanitized inputs that should be flagged.
+    validations:
+      required: true
+  - type: textarea
+    id: negative
+    attributes:
+      label: Negative examples
+      description: Nearby inputs that must not be flagged.
+    validations:
+      required: true

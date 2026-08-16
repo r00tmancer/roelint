@@ -1,0 +1,12 @@
+name: ACME lab validation
+steps:
+  - id: discovery
+    name: Low-rate service inventory
+    technique: network-service-scanning
+    command: nmap -sV --max-rate 25 10.20.4.0/24
+    targets: [10.20.4.0/24]
+
+  - id: health-check
+    name: Validate the lab endpoint
+    technique: application-layer-protocol
+    command: curl --fail https://api.lab.acme.example/health

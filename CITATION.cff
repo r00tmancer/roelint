@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: If ROE-Lint supports your research, please cite it using this metadata.
+title: ROE-Lint
+abstract: A local policy firewall for authorized red-team commands and AI agents.
+type: software
+authors:
+  - family-names: Demir
+    given-names: Enes
+repository-code: https://github.com/r00tmancer/roelint
+license: MIT
+version: 0.1.0
+date-released: 2026-08-15

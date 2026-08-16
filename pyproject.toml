@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "roelint"
+version = "0.1.0"
+description = "Import and enforce Rules of Engagement for authorized red-team playbooks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Enes Demir" }]
+keywords = ["red-team", "pentest", "security", "rules-of-engagement", "sarif"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Information Technology",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+]
+dependencies = ["defusedxml>=0.7.1,<0.8", "PyYAML>=6.0.2,<7", "pypdf>=5.0,<7"]
+
+[project.optional-dependencies]
+agent = ["mcp>=2.0,<3"]
+dev = [
+  "mcp>=2.0,<3",
+  "pytest>=8.3",
+  "ruff>=0.9",
+  "types-defusedxml>=0.7",
+  "mypy>=1.14",
+  "types-PyYAML>=6.0",
+]
+
+[project.scripts]
+roelint = "roelint.cli:main"
+roelint-mcp = "roelint.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/r00tmancer/roelint"
+Issues = "https://github.com/r00tmancer/roelint/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/roelint"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
