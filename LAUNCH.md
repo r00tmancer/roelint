@@ -7,9 +7,9 @@
 - [x] Enable private vulnerability reporting and Dependabot security updates.
 - [x] Protect `main` with required CI, linear history, and resolved conversations.
 - [x] Push the repository and open the first draft PR using `PR_BODY.md`.
-- [ ] Upload `docs/social-preview.png` in the repository's Social preview settings.
-- [ ] Review and merge PR #1 through CI.
-- [ ] Tag `v0.1.0` and create a GitHub Release.
+- [x] Upload `docs/social-preview.png` in the repository's Social preview settings.
+- [x] Review and merge PR #2 through CI.
+- [x] Tag `v0.1.0` and create a GitHub Release.
 - [ ] Reserve the `roelint` name on PyPI and publish with trusted publishing.
 - [ ] Move the `v1` tag to the release commit for Action users.
 
